@@ -1,0 +1,92 @@
+[
+  {
+    "Date": "2019-12-13T20:03:33.5489557Z",
+    "TemperatureC": 15,
+    "TemperatureF": 58,
+    "Summary": "Sunny",
+    "City": {
+      "Code": "1",
+      "Name": "Tallin"
+    }
+  },
+  {
+    "Date": "2019-12-13T20:03:33.5491178Z",
+    "TemperatureC": 3,
+    "TemperatureF": 37,
+    "Summary": "Cloudy",
+    "City": {
+      "Code": "2",
+      "Name": "Tartu"
+    }
+  },
+  {
+    "Date": "2019-12-13T20:03:33.5491199Z",
+    "TemperatureC": 16,
+    "TemperatureF": 60,
+    "Summary": "Sunny",
+    "City": {
+      "Code": "3",
+      "Name": "Narva"
+    }
+  },
+  {
+    "Date": "2019-12-13T20:03:33.5491208Z",
+    "TemperatureC": 4,
+    "TemperatureF": 39,
+    "Summary": "Rainy",
+    "City": {
+      "Code": "4",
+      "Name": "Pärnu"
+    }
+  },
+  {
+    "Date": "2019-12-13T20:03:33.5491216Z",
+    "TemperatureC": 2,
+    "TemperatureF": 35,
+    "Summary": "Windy",
+    "City": {
+      "Code": "5",
+      "Name": "Kohtla-Järve"
+    }
+  },
+  {
+    "Date": "2019-12-13T20:03:33.549124Z",
+    "TemperatureC": -3,
+    "TemperatureF": 27,
+    "Summary": "Snowy",
+    "City": {
+      "Code": "6",
+      "Name": "Viljandi"
+    }
+  },
+  {
+    "Date": "2019-12-13T20:03:33.5491455Z",
+    "TemperatureC": 12,
+    "TemperatureF": 53,
+    "Summary": "Sunny",
+    "City": {
+      "Code": "7",
+      "Name": "Maardu"
+    }
+  },
+  {
+    "Date": "2019-12-13T20:03:33.5491464Z",
+    "TemperatureC": 6,
+    "TemperatureF": 42,
+    "Summary": "Cloudy",
+    "City": {
+      "Code": "8",
+      "Name": "Rakvere"
+    }
+  },
+  {
+    "Date": "2019-12-13T20:03:33.5491473Z",
+    "TemperatureC": 4,
+    "TemperatureF": 39,
+    "Summary": "Raimy",
+    "City": {
+      "Code": "9",
+      "Name": "Kuressaare"
+    }
+  }
+]

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Configuration;
+using DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -29,6 +30,7 @@ namespace Services
             services.AddControllers();
 
             services.Configure<DatasourceConfiguration>(Configuration.GetSection("DataSource:FilePaths"));
+            services.AddServiceRetrieverServiceCollection();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

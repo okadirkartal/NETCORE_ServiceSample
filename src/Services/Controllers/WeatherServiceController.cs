@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using DataSource;
 using DataSource.Entities;
@@ -11,24 +12,24 @@ namespace Services.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class CityServiceController : ControllerBase
+    public class WeatherServiceController : ControllerBase
     {
-        private readonly ILogger<CityServiceController> _logger;
-        private readonly IDataRetriever<City> _dataRetriever;
+        private readonly ILogger<WeatherServiceController> _logger;
+        private readonly IDataRetriever<Weather> _dataRetriever;
 
-        public CityServiceController(ILogger<CityServiceController> logger, IDataRetriever<City> dataRetriever)
+        public WeatherServiceController(ILogger<WeatherServiceController> logger, IDataRetriever<Weather> dataRetriever)
         {
             _logger = logger;
             _dataRetriever = dataRetriever;
         }
 
         [HttpGet]
-        public async Task<IEnumerable<City>> Get(string cityCode)
+        public async Task<List<Weather>> Get(string cityCode)
         {
             try
             {
                 var result = _dataRetriever.GetData(cityCode);
-                return await Task.FromResult(result);
+                return  await Task.FromResult(result);
             }
             catch (Exception ex)
             {

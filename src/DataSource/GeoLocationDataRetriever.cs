@@ -17,7 +17,7 @@ namespace DataSource
         
         public List<GeoLocation> GetData(string parameter)
         {
-            var list = JsonSerializer.Deserialize<List<GeoLocation>>(_configuration.Value.GeolocationFilePath);
+            var list = JsonSerializer.Deserialize<List<GeoLocation>>(_configuration.Value.GeolocationDataFilePath);
             return list;
         }
     }

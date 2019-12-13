@@ -6,8 +6,8 @@ namespace Configuration
     {
         public string CityDataFilePath { get; set; }
 
-        public string WeatherInformationDataFilePath { get; set; }
+        public string WeatherDataFilePath { get; set; }
 
-        public string GeolocationFilePath { get; set; }
+        public string GeolocationDataFilePath { get; set; }
     }
 }

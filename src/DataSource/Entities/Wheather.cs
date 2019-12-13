@@ -2,7 +2,7 @@ using System;
 
 namespace DataSource.Entities
 {
-    public class WeatherInformation
+    public class Weather
     {
         public DateTime Date { get; set; }
 
@@ -12,6 +12,6 @@ namespace DataSource.Entities
 
         public string Summary { get; set; }
 
-        public string cityCode { get; set; }
+        public City City { get; set; }
     }
 }

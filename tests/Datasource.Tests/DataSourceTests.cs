@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using NSubstitute;
 using NUnit.Framework;
+using CKeys=Common.Common;
 
 namespace Datasource.Tests
 {
@@ -27,16 +28,16 @@ namespace Datasource.Tests
             _configuration = GetApplicationConfiguration();
 
             Directory.CreateDirectory("Data");
-            CopyJsonFiles(_serviceDirectory, _configuration["DataSource:FilePaths:CityDataFilePath"]);
+            CopyJsonFiles(_serviceDirectory, _configuration[CKeys.CityDataConfigKey]);
 
-            CopyJsonFiles(_serviceDirectory, _configuration["DataSource:FilePaths:WeatherInformationDataFilePath"]);
+            CopyJsonFiles(_serviceDirectory, _configuration[CKeys.WheatherDataConfigKey]);
 
-            CopyJsonFiles(_serviceDirectory, _configuration["DataSource:FilePaths:GeolocationFilePath"]);
+            CopyJsonFiles(_serviceDirectory, _configuration[CKeys.GeoLocationDataConfigKey]);
         }
 
-        [TestCase("DataSource:FilePaths:CityDataFilePath")]
-        [TestCase("DataSource:FilePaths:WeatherInformationDataFilePath")]
-        [TestCase("DataSource:FilePaths:GeolocationFilePath")]
+        [TestCase(CKeys.CityDataConfigKey)]
+        [TestCase(CKeys.WheatherDataConfigKey)]
+        [TestCase(CKeys.GeoLocationDataConfigKey)]
         public void CheckCityDataFiles_WhenExists_ReturnsTrue(string parameter)
         {
             var filePath = _configuration[parameter];
@@ -49,9 +50,20 @@ namespace Datasource.Tests
         {
             var mockedConfiguration = Substitute.For<IOptions<DatasourceConfiguration>>();
             mockedConfiguration.Value.Returns(new DatasourceConfiguration()
-                {CityDataFilePath = _configuration["DataSource:FilePaths:CityDataFilePath"]});
+                {CityDataFilePath = _configuration[CKeys.CityDataConfigKey]});
 
             var result = new CityDataRetriever(mockedConfiguration).GetData(null);
+            Assert.AreEqual(result.Count, 9);
+        }
+        
+        [Test]
+        public void CheckWeatherData_WhenExists_ReturnsTrue()
+        {
+            var mockedConfiguration = Substitute.For<IOptions<DatasourceConfiguration>>();
+            mockedConfiguration.Value.Returns(new DatasourceConfiguration()
+                {WeatherDataFilePath = _configuration[CKeys.WheatherDataConfigKey]});
+
+            var result = new WheatherDataRetriever(mockedConfiguration).GetData(null);
             Assert.AreEqual(result.Count, 9);
         }
 
