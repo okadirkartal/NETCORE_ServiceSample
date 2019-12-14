@@ -99,8 +99,8 @@ namespace Datasource.Tests
                     },
                     acceptable_city_names = new List<AcceptableCityName>
                     {
-                        new AcceptableCityName() {city = "Chestnut Street", state = "IL"},
-                        new AcceptableCityName() {city = "Fort Dearborn", state = "IL"}
+                        new AcceptableCityName() {city = "Sample Street 11", state = "IL"},
+                        new AcceptableCityName() {city = "Sample Street 12", state = "IL"}
                     },
                     area_codes = new List<int> {312}
                 },

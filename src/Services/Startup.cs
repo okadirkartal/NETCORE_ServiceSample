@@ -1,17 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Configuration;
 using DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
 
 namespace Services
@@ -29,14 +22,11 @@ namespace Services
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers(options => { options.RespectBrowserAcceptHeader = true; })
-                .AddJsonOptions(options =>
-                {
-                    options.JsonSerializerOptions.PropertyNamingPolicy = null; 
-                });
+                .AddJsonOptions(options => { options.JsonSerializerOptions.PropertyNamingPolicy = null; });
 
             services.Configure<DatasourceConfiguration>(Configuration.GetSection("DataSource:FilePaths"));
             services.AddServiceRetrieverServiceCollection();
-            
+
             //For XML And JSON format
             services.AddMvc(options =>
             {
@@ -45,7 +35,7 @@ namespace Services
                 options.FormatterMappings.SetMediaTypeMappingForFormat
                     ("json", MediaTypeHeaderValue.Parse("application/json"));
             }).AddXmlSerializerFormatters();
-            
+
             services.AddHttpClient();
         }
 
@@ -60,8 +50,6 @@ namespace Services
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
-            // app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }

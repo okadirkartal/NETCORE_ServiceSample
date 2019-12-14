@@ -4,7 +4,8 @@ using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Configuration;
-using DataSource.Entities; 
+using DataSource.Entities;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
@@ -14,22 +15,24 @@ namespace DataSource
     {
         private readonly IOptions<DatasourceConfiguration> _configuration;
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ILogger<GeoLocationDataRetriever> _logger;
 
         public GeoLocationDataRetriever(IOptions<DatasourceConfiguration> configuration,
-            IHttpClientFactory httpClientFactory)
+            IHttpClientFactory httpClientFactory, ILogger<GeoLocationDataRetriever> logger)
         {
             _configuration = configuration;
             _httpClientFactory = httpClientFactory;
+            _logger = logger;
         }
 
-        private async Task<HttpResponseMessage> GetGeoLocationFromAPI(string parameter)
+        private async Task<HttpResponseMessage> GetGeoLocationFromApi(string parameter)
         {
             string zipCode = parameter;
 
 
-            var API_PATH_IP_API = string.Format(_configuration.Value.GeoLocationIPPath, zipCode);
+            var apiPathIpApi = string.Format(_configuration.Value.GeoLocationIPPath, zipCode);
 
-            var request = new HttpRequestMessage(HttpMethod.Get, API_PATH_IP_API);
+            var request = new HttpRequestMessage(HttpMethod.Get, apiPathIpApi);
 
             var client = _httpClientFactory.CreateClient();
 
@@ -38,22 +41,32 @@ namespace DataSource
 
         public async Task<List<GeoLocation>> GetData(string parameter)
         {
-            var response = await GetGeoLocationFromAPI(parameter);
-
             List<GeoLocation> list = new List<GeoLocation>();
 
-            if (response.IsSuccessStatusCode)
+            try
             {
-                var locationDetails = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                if (locationDetails != null)
+                var response = await GetGeoLocationFromApi(parameter);
+
+
+                if (response.IsSuccessStatusCode)
                 {
-                    var geoLocationItem = JsonConvert.DeserializeObject<GeoLocation>(locationDetails.Replace(@"\", ""));
-                    if (geoLocationItem != null)
-                        list.Add(geoLocationItem);
+                    var locationDetails = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                    if (locationDetails != null)
+                    {
+                        var geoLocationItem =
+                            JsonConvert.DeserializeObject<GeoLocation>(locationDetails.Replace(@"\", ""));
+                        if (geoLocationItem != null)
+                            list.Add(geoLocationItem);
+                    }
+                }
+                else
+                {
+                    list.Add(await GetRandomGeoLocation());
                 }
             }
-            else
+            catch (Exception ex)
             {
+                _logger.LogError(ex.Message, ex, "An error occured while retrieving online geo location data");
                 list.Add(await GetRandomGeoLocation());
             }
 

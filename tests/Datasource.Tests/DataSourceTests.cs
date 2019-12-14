@@ -1,17 +1,12 @@
-using System;
 using System.IO;
-using System.Net;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 using Configuration;
 using DataSource;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using NSubstitute;
-using NSubstitute.Core;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 using CKeys = Common.Common;
 
 namespace Datasource.Tests
@@ -85,7 +80,8 @@ namespace Datasource.Tests
             var mockedHttpClient = Substitute.For<IHttpClientFactory>();
             mockedHttpClient.CreateClient("test");
 
-            var result = await new GeoLocationDataRetriever(mockedConfiguration, mockedHttpClient).GetGeoLocationList();
+            var result = await new GeoLocationDataRetriever(mockedConfiguration, mockedHttpClient, null)
+                .GetGeoLocationList();
             Assert.AreEqual(result.Count, 5);
         }
 
