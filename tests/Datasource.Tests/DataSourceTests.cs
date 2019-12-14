@@ -1,12 +1,18 @@
+using System;
 using System.IO;
+using System.Net;
+using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Configuration;
 using DataSource;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using NSubstitute;
+using NSubstitute.Core;
 using NUnit.Framework;
-using CKeys=Common.Common;
+using NUnit.Framework.Internal;
+using CKeys = Common.Common;
 
 namespace Datasource.Tests
 {
@@ -48,7 +54,7 @@ namespace Datasource.Tests
         }
 
         [Test]
-        public async  Task CheckCityData_WhenExists_ReturnsTrue()
+        public async Task CheckCityData_WhenExists_ReturnsTrue()
         {
             var mockedConfiguration = Substitute.For<IOptions<DatasourceConfiguration>>();
             mockedConfiguration.Value.Returns(new DatasourceConfiguration()
@@ -57,9 +63,9 @@ namespace Datasource.Tests
             var result = await new CityDataRetriever(mockedConfiguration).GetData(null);
             Assert.AreEqual(result.Count, 9);
         }
-        
+
         [Test]
-        public async  Task CheckWeatherData_WhenExists_ReturnsTrue()
+        public async Task CheckWeatherData_WhenExists_ReturnsTrue()
         {
             var mockedConfiguration = Substitute.For<IOptions<DatasourceConfiguration>>();
             mockedConfiguration.Value.Returns(new DatasourceConfiguration()
@@ -67,6 +73,20 @@ namespace Datasource.Tests
 
             var result = await new WheatherDataRetriever(mockedConfiguration).GetData(null);
             Assert.AreEqual(result.Count, 9);
+        }
+
+        [Test]
+        public async Task CheckGeoLocationData_WhenExists_ReturnsTrue()
+        {
+            var mockedConfiguration = Substitute.For<IOptions<DatasourceConfiguration>>();
+            mockedConfiguration.Value.Returns(new DatasourceConfiguration()
+                {GeolocationDataFilePath = _configuration[CKeys.GeoLocationDataConfigKey]});
+
+            var mockedHttpClient = Substitute.For<IHttpClientFactory>();
+            mockedHttpClient.CreateClient("test");
+
+            var result = await new GeoLocationDataRetriever(mockedConfiguration, mockedHttpClient).GetGeoLocationList();
+            Assert.AreEqual(result.Count, 5);
         }
 
         #region Non Tests
@@ -95,6 +115,7 @@ namespace Datasource.Tests
 
         #endregion
 
+        //Delete configuration and json data files after all test finished
         [OneTimeTearDown]
         public void OneTimeTeardown()
         {
