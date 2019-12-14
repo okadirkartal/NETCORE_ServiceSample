@@ -24,7 +24,7 @@ namespace Services.Controllers
             _dataRetriever = dataRetriever;
         }
 
-        [HttpGet]
+        [HttpGet("{cityCode}.{format?}"),FormatFilter]
         public async Task<List<Weather>> Get(string cityCode)
         {
             try

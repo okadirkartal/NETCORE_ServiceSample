@@ -21,7 +21,7 @@ namespace Services.Controllers
             _dataRetriever = dataRetriever;
         }
 
-        [HttpPost]
+        [HttpPost("{format?}"),FormatFilter]
         public async Task<GeoLocation> Post([FromBody]string zipCode)
         {
             try

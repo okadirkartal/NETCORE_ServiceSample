@@ -1,3 +1,132 @@
-﻿{
-  
-}
+[
+  {
+    "zip_code": "60610",
+    "lat": 41906762.0,
+    "lng": 87632174.0,
+    "city": "Chicago",
+    "state": "IL",
+    "timezone": {
+      "timezone_identifier": "America/Chicago",
+      "timezone_abbr": "CST",
+      "utc_offset_sec": -21600,
+      "is_dst": "F"
+    },
+    "acceptable_city_names": [
+      {
+        "city": "Chestnut Street",
+        "state": "IL"
+      },
+      {
+        "city": "Fort Dearborn",
+        "state": "IL"
+      }
+    ],
+    "area_codes": [
+      312
+    ]
+  },
+  {
+    "zip_code": "60611",
+    "lat": 41906762.0,
+    "lng": 87632174.0,
+    "city": "Seattle",
+    "state": "IR",
+    "timezone": {
+      "timezone_identifier": "America/Seattle",
+      "timezone_abbr": "CST",
+      "utc_offset_sec": -21601,
+      "is_dst": "F"
+    },
+    "acceptable_city_names": [
+      {
+        "city": "Sample1 Street",
+        "state": "IR"
+      },
+      {
+        "city": "Sample2 Street",
+        "state": "IR"
+      }
+    ],
+    "area_codes": [
+      313
+    ]
+  },
+  {
+    "zip_code": "60612",
+    "lat": 41906762.0,
+    "lng": 87632174.0,
+    "city": "Newyork",
+    "state": "IK",
+    "timezone": {
+      "timezone_identifier": "America/Newyork",
+      "timezone_abbr": "CST",
+      "utc_offset_sec": -21600,
+      "is_dst": "F"
+    },
+    "acceptable_city_names": [
+      {
+        "city": "Sample3 Street",
+        "state": "IK"
+      },
+      {
+        "city": "Sample3 Street",
+        "state": "IK"
+      }
+    ],
+    "area_codes": [
+      314
+    ]
+  },
+  {
+    "zip_code": "60613",
+    "lat": 41906762.0,
+    "lng": 87632174.0,
+    "city": "Boston",
+    "state": "IK",
+    "timezone": {
+      "timezone_identifier": "America/Boston",
+      "timezone_abbr": "CST",
+      "utc_offset_sec": -21604,
+      "is_dst": "F"
+    },
+    "acceptable_city_names": [
+      {
+        "city": "Sample4 Street",
+        "state": "IT"
+      },
+      {
+        "city": "Sample5 Street",
+        "state": "IT"
+      }
+    ],
+    "area_codes": [
+      315
+    ]
+  },
+  {
+    "zip_code": "60614",
+    "lat": 41906762.0,
+    "lng": 87632174.0,
+    "city": "Manhattan",
+    "state": "IM",
+    "timezone": {
+      "timezone_identifier": "America/Manhattan",
+      "timezone_abbr": "CST",
+      "utc_offset_sec": -21605,
+      "is_dst": "F"
+    },
+    "acceptable_city_names": [
+      {
+        "city": "Sample5 Street",
+        "state": "IM"
+      },
+      {
+        "city": "Sample6 Street",
+        "state": "IM"
+      }
+    ],
+    "area_codes": [
+      316
+    ]
+  }
+]

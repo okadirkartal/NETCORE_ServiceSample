@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Configuration;
@@ -49,8 +51,21 @@ namespace DataSource
                         list.Add(geoLocationItem);
                 }
             }
+            else
+            {
+                var geoLocationOfflineList = await GetGeoLocationList();
+                Random rnd=new Random();
+                var geoLocationItem = geoLocationOfflineList[rnd.Next(0, geoLocationOfflineList.Count - 1)];
+                list.Add(geoLocationItem);
+            }
 
             return list;
+        }
+        
+        public Task<List<GeoLocation>> GetGeoLocationList()
+        {
+            var list =  System.Text.Json.JsonSerializer.Deserialize<List<GeoLocation>>(File.ReadAllText(_configuration.Value.GeolocationDataFilePath));
+            return Task.FromResult(list);
         }
     }
 }

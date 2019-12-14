@@ -22,7 +22,7 @@ namespace Services.Controllers
             _dataRetriever = dataRetriever;
         }
 
-        [HttpGet]
+        [HttpGet("{cityCode}.{format?}"),FormatFilter]
         public async Task<IEnumerable<City>> Get(string cityCode)
         {
             try
