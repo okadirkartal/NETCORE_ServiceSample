@@ -31,6 +31,7 @@ namespace Services
 
             services.Configure<DatasourceConfiguration>(Configuration.GetSection("DataSource:FilePaths"));
             services.AddServiceRetrieverServiceCollection();
+            services.AddHttpClient();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,7 +46,7 @@ namespace Services
 
             app.UseRouting();
 
-            app.UseAuthorization();
+           // app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }

@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DataSource
 {
     public interface IDataRetriever<T>
     {
-        List<T> GetData(string parameter);
+        Task<List<T>> GetData(string parameter);
     }
 }

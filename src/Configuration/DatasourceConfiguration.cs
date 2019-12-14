@@ -9,5 +9,7 @@ namespace Configuration
         public string WeatherDataFilePath { get; set; }
 
         public string GeolocationDataFilePath { get; set; }
+
+        public string GeoLocationIPPath { get; set; }
     }
 }

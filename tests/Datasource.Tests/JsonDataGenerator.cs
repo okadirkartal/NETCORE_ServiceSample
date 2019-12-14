@@ -8,6 +8,7 @@ using NUnit.Framework;
 
 namespace Datasource.Tests
 {
+    [Order(1)]
     public class JsonDataGenerator
     {
         [Test]

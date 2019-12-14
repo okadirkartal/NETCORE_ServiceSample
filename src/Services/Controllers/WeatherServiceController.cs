@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using DataSource;
 using DataSource.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Logging;
 
 namespace Services.Controllers
@@ -15,7 +16,7 @@ namespace Services.Controllers
     public class WeatherServiceController : ControllerBase
     {
         private readonly ILogger<WeatherServiceController> _logger;
-        private readonly IDataRetriever<Weather> _dataRetriever;
+        private readonly IDataRetriever<Weather> _dataRetriever; 
 
         public WeatherServiceController(ILogger<WeatherServiceController> logger, IDataRetriever<Weather> dataRetriever)
         {
@@ -28,8 +29,8 @@ namespace Services.Controllers
         {
             try
             {
-                var result = _dataRetriever.GetData(cityCode);
-                return  await Task.FromResult(result);
+                var result = await _dataRetriever.GetData(cityCode);
+                return result;
             }
             catch (Exception ex)
             {

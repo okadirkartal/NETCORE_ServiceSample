@@ -27,8 +27,8 @@ namespace Services.Controllers
         {
             try
             {
-                var result = _dataRetriever.GetData(cityCode);
-                return await Task.FromResult(result);
+                var result =await _dataRetriever.GetData(cityCode);
+                return result;
             }
             catch (Exception ex)
             {

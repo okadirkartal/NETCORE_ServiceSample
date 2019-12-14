@@ -1,4 +1,5 @@
 using System.IO;
+using System.Threading.Tasks;
 using Configuration;
 using DataSource;
 using Microsoft.Extensions.Configuration;
@@ -9,6 +10,7 @@ using CKeys=Common.Common;
 
 namespace Datasource.Tests
 {
+    [Order(2)]
     public class DataSourceTests
     {
         private string _serviceDirectory;
@@ -46,24 +48,24 @@ namespace Datasource.Tests
         }
 
         [Test]
-        public void CheckCityData_WhenExists_ReturnsTrue()
+        public async  Task CheckCityData_WhenExists_ReturnsTrue()
         {
             var mockedConfiguration = Substitute.For<IOptions<DatasourceConfiguration>>();
             mockedConfiguration.Value.Returns(new DatasourceConfiguration()
                 {CityDataFilePath = _configuration[CKeys.CityDataConfigKey]});
 
-            var result = new CityDataRetriever(mockedConfiguration).GetData(null);
+            var result = await new CityDataRetriever(mockedConfiguration).GetData(null);
             Assert.AreEqual(result.Count, 9);
         }
         
         [Test]
-        public void CheckWeatherData_WhenExists_ReturnsTrue()
+        public async  Task CheckWeatherData_WhenExists_ReturnsTrue()
         {
             var mockedConfiguration = Substitute.For<IOptions<DatasourceConfiguration>>();
             mockedConfiguration.Value.Returns(new DatasourceConfiguration()
                 {WeatherDataFilePath = _configuration[CKeys.WheatherDataConfigKey]});
 
-            var result = new WheatherDataRetriever(mockedConfiguration).GetData(null);
+            var result = await new WheatherDataRetriever(mockedConfiguration).GetData(null);
             Assert.AreEqual(result.Count, 9);
         }
 

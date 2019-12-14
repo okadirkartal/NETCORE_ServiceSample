@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.Json;
+using System.Threading.Tasks;
 using Configuration;
 using DataSource.Entities;
 using Microsoft.Extensions.Options;
@@ -18,12 +19,13 @@ namespace DataSource
             _configuration = configuration;
         }
 
-        public List<City> GetData(string cityCode)
+        public Task<List<City>> GetData(string parameter)
         {
+            string cityCode = parameter;
             var list = JsonSerializer.Deserialize<List<City>>(File.ReadAllText(_configuration.Value.CityDataFilePath));
             if (!string.IsNullOrWhiteSpace(cityCode))
                 list = list.Where(x => x.Code == cityCode).ToList();
-            return list;
+            return Task.FromResult(list);
         }
     }
 }
