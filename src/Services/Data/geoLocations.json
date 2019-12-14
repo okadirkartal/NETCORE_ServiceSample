@@ -13,11 +13,11 @@
     },
     "acceptable_city_names": [
       {
-        "city": "Chestnut Street",
+        "city": "Sample Street 11",
         "state": "IL"
       },
       {
-        "city": "Fort Dearborn",
+        "city": "Sample Street 12",
         "state": "IL"
       }
     ],
