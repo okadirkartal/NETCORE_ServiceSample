@@ -22,6 +22,12 @@ namespace Services.Controllers
         }
 
 
+        /* SAMPLE REQUEST(POST): https://localhost:44375/geoLocationService/all.{format} 
+                                https://localhost:44375/geoLocationService/all.json
+                                https://localhost:44375/geoLocationService/all.xml
+                                
+          NOTE : zipCode data should be added as BODY parameter
+                          */
         [HttpPost]
         [Route("all.{format}"), FormatFilter]
         public async Task<IActionResult> Post([FromBody] string zipCode)
@@ -38,6 +44,12 @@ namespace Services.Controllers
             }
         }
 
+        /* SAMPLE REQUEST(POST): https://localhost:44375/geoLocationService/timeZone.{format} 
+                               https://localhost:44375/geoLocationService/timeZone.json
+                               https://localhost:44375/geoLocationService/timeZone.xml
+                               
+         NOTE : zipCode data should be added as BODY parameter
+                         */
         [HttpPost]
         [Route("timeZone.{format}"), FormatFilter]
         public async Task<IActionResult> GetTimeZone([FromBody] string zipCode)

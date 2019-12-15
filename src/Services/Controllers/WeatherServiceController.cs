@@ -21,6 +21,10 @@ namespace Services.Controllers
             _dataRetriever = dataRetriever ?? throw new ArgumentException(nameof(dataRetriever));
         }
 
+        /* SAMPLE REQUEST(GET): https://localhost:44375/weatherService/{cityId}.{format} 
+                              https://localhost:44375/weatherService/745044.json
+                              https://localhost:44375/weatherService/745044.xml
+                          */
         [HttpGet("{cityCode}.{format?}"), FormatFilter]
         public async Task<IActionResult> Get(string cityCode)
         {
