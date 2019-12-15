@@ -3,7 +3,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Configuration;
 using DataSource;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NSubstitute;
@@ -13,13 +12,8 @@ using CKeys = Common.Common;
 namespace Datasource.Tests
 {
     [Order(2)]
-    public class DataSourceTests
+    public class DataSourceTests : BaseTests
     {
-        private string _serviceDirectory;
-
-        private IConfiguration _configuration;
-
-
         [OneTimeSetUp]
         public void OneTimeSetup()
         {
@@ -39,7 +33,7 @@ namespace Datasource.Tests
 
         [TestCase(CKeys.CityDataConfigKey)]
         [TestCase(CKeys.GeoLocationDataConfigKey)]
-        public void CheckCityDataFiles_WhenExists_ReturnsTrue(string parameter)
+        public void CheckJsonFiles_WhenExists_ReturnsTrue(string parameter)
         {
             var filePath = _configuration[parameter];
             string dataPath = Path.Combine(_serviceDirectory, $@"src{Path.DirectorySeparatorChar}Services\");
@@ -57,6 +51,25 @@ namespace Datasource.Tests
             Assert.Greater(result.Count, 0);
         }
 
+        #region GeoLocationDataRetriever Tests
+
+        [Test]
+        public async Task CheckGeoLocationDataFromFile_WhenExists_ReturnsTrue()
+        {
+            var mockedConfiguration = Substitute.For<IOptions<DatasourceConfiguration>>();
+            mockedConfiguration.Value.Returns(new DatasourceConfiguration()
+                {GeolocationDataFilePath = _configuration[CKeys.GeoLocationDataConfigKey]});
+
+            var mockedHttpClient = Substitute.For<IHttpClientFactory>();
+            mockedHttpClient.CreateClient("test");
+
+
+            var logger = Substitute.For<ILogger<GeoLocationDataRetriever>>();
+
+            var result = await new GeoLocationDataRetriever(mockedConfiguration, mockedHttpClient, logger)
+                .GetDataFromFile(null);
+            Assert.Greater(result.Count, 0);
+        }
 
         [Test]
         public async Task CheckGeoLocationData_WhenExists_ReturnsTrue()
@@ -72,32 +85,49 @@ namespace Datasource.Tests
             var logger = Substitute.For<ILogger<GeoLocationDataRetriever>>();
 
             var result = await new GeoLocationDataRetriever(mockedConfiguration, mockedHttpClient, logger)
-                .GetData("60610");
-            Assert.AreEqual(result.Count, 1);
+                .GetDataFromFile("60610");
+            Assert.AreEqual(result.Count, 5);
         }
 
-        #region Non Tests
-
-        static IConfigurationRoot GetIConfigurationRoot(string outputPath)
+        [Test]
+        public async Task CheckGeoLocationRandomData_WhenExists_ReturnsTrue()
         {
-            return new ConfigurationBuilder()
-                .SetBasePath(outputPath)
-                .AddJsonFile("appsettings.json", optional: true)
-                .Build();
+            var mockedConfiguration = Substitute.For<IOptions<DatasourceConfiguration>>();
+            mockedConfiguration.Value.Returns(new DatasourceConfiguration()
+                {GeolocationDataFilePath = _configuration[CKeys.GeoLocationDataConfigKey]});
+
+            var mockedHttpClient = Substitute.For<IHttpClientFactory>();
+            mockedHttpClient.CreateClient("test");
+
+
+            var logger = Substitute.For<ILogger<GeoLocationDataRetriever>>();
+
+            var result = await new GeoLocationDataRetriever(mockedConfiguration, mockedHttpClient, logger)
+                .GetRandomData();
+            Assert.IsNotNull(result.acceptable_city_names);
         }
 
-        static void CopyJsonFiles(string serviceDirectory, string jsonFileName)
-        {
-            if (!File.Exists(Path.Combine(Directory.GetCurrentDirectory(), jsonFileName)))
-                File.Copy(
-                    Path.Combine(serviceDirectory,
-                        $@"src{Path.DirectorySeparatorChar}Services{Path.DirectorySeparatorChar}{jsonFileName}"),
-                    jsonFileName);
-        }
+        #endregion
 
-        static IConfiguration GetApplicationConfiguration()
+
+        #region  WeatherDataRetriever Tests
+
+        [Test]
+        public async Task CheckWeatherData_WhenExists_ReturnsTrue()
         {
-            return GetIConfigurationRoot(TestContext.CurrentContext.TestDirectory);
+            var mockedConfiguration = Substitute.For<IOptions<DatasourceConfiguration>>();
+            mockedConfiguration.Value.Returns(new DatasourceConfiguration()
+                {WeatherApiBaseUrl = _configuration[CKeys.WeatherApiBaseUrl]});
+
+            var mockedHttpClient = Substitute.For<IHttpClientFactory>();
+            mockedHttpClient.CreateClient("test");
+
+
+            var logger = Substitute.For<ILogger<WeatherDataRetriever>>();
+
+            var result = await new WeatherDataRetriever(mockedConfiguration, mockedHttpClient, logger)
+                .GetData("745044");
+            Assert.Greater(result.Count, 0);
         }
 
         #endregion

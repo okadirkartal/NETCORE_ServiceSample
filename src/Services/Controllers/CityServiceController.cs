@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using DataSource.Contracts;
 using Microsoft.AspNetCore.Mvc;
@@ -17,22 +16,22 @@ namespace Services.Controllers
 
         public CityServiceController(ILogger<CityServiceController> logger, IOfflineDataRetriever<City> dataRetriever)
         {
-            _logger = logger?? throw  new ArgumentNullException(nameof(logger));
-            _dataRetriever = dataRetriever ?? throw  new ArgumentException(nameof(dataRetriever));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _dataRetriever = dataRetriever ?? throw new ArgumentException(nameof(dataRetriever));
         }
 
         [HttpGet("{id}.{format?}"), FormatFilter]
-        public async Task<IEnumerable<City>> Get(string id)
+        public async Task<IActionResult> Get(string id)
         {
             try
             {
                 var result = await _dataRetriever.GetDataFromFile(id);
-                return result;
+                return Ok(result);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return null;
+                return NoContent();
             }
         }
     }

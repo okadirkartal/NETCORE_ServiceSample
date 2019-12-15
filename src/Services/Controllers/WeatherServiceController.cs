@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks; 
-using DataSource.Contracts; 
+using System.Threading.Tasks;
+using DataSource.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Models;
@@ -18,22 +17,22 @@ namespace Services.Controllers
         public WeatherServiceController(ILogger<WeatherServiceController> logger,
             IDataRetriever<WeatherInfo> dataRetriever)
         {
-            _logger = logger?? throw  new ArgumentNullException(nameof(logger));
-            _dataRetriever = dataRetriever ?? throw  new ArgumentException(nameof(dataRetriever));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _dataRetriever = dataRetriever ?? throw new ArgumentException(nameof(dataRetriever));
         }
 
         [HttpGet("{cityCode}.{format?}"), FormatFilter]
-        public async Task<List<WeatherInfo>> Get(string cityCode)
+        public async Task<IActionResult> Get(string cityCode)
         {
             try
             {
                 var result = await _dataRetriever.GetData(cityCode);
-                return result;
+                return Ok(result);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return null;
+                return NoContent();
             }
         }
     }
