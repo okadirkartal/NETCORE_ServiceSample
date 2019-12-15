@@ -64,7 +64,7 @@ namespace Datasource.Tests
             mockedHttpClient.CreateClient("test");
 
 
-            var logger = Substitute.For<ILogger<GeoLocationDataRetriever>>();
+            var logger = Substitute.For<ILoggerFactory>();
 
             var result = await new GeoLocationDataRetriever(mockedConfiguration, mockedHttpClient, logger)
                 .GetDataFromFile(null);
@@ -82,7 +82,7 @@ namespace Datasource.Tests
             mockedHttpClient.CreateClient("test");
 
 
-            var logger = Substitute.For<ILogger<GeoLocationDataRetriever>>();
+            var logger = Substitute.For<ILoggerFactory>();
 
             var result = await new GeoLocationDataRetriever(mockedConfiguration, mockedHttpClient, logger)
                 .GetDataFromFile("60610");
@@ -100,7 +100,7 @@ namespace Datasource.Tests
             mockedHttpClient.CreateClient("test");
 
 
-            var logger = Substitute.For<ILogger<GeoLocationDataRetriever>>();
+            var logger = Substitute.For<ILoggerFactory>();
 
             var result = await new GeoLocationDataRetriever(mockedConfiguration, mockedHttpClient, logger)
                 .GetRandomData();
@@ -123,7 +123,7 @@ namespace Datasource.Tests
             mockedHttpClient.CreateClient("test");
 
 
-            var logger = Substitute.For<ILogger<WeatherDataRetriever>>();
+            var logger = Substitute.For<ILoggerFactory>();
 
             var result = await new WeatherDataRetriever(mockedConfiguration, mockedHttpClient, logger)
                 .GetData("745044");
