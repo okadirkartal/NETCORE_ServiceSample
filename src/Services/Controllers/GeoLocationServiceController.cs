@@ -17,8 +17,8 @@ namespace Services.Controllers
         public GeoLocationServiceController(ILoggerFactory loggerFactory,
             IDataRetriever<GeoLocation> dataRetriever)
         {
-            _logger = loggerFactory.CreateLogger(typeof(GeoLocationServiceController));
-            _dataRetriever = dataRetriever ?? throw new ArgumentException(nameof(dataRetriever));
+            _logger = loggerFactory.CreateLogger(typeof(GeoLocationServiceController)) ?? throw new ArgumentNullException(nameof(loggerFactory));
+            _dataRetriever = dataRetriever ?? throw new ArgumentNullException(nameof(dataRetriever));
         }
 
 
@@ -32,6 +32,8 @@ namespace Services.Controllers
         [Route("all.{format}"), FormatFilter]
         public async Task<IActionResult> Post([FromBody] string zipCode)
         {
+            if (string.IsNullOrWhiteSpace(zipCode)) return BadRequest();
+
             try
             {
                 var result = await _dataRetriever.GetData(zipCode);
@@ -54,6 +56,8 @@ namespace Services.Controllers
         [Route("timeZone.{format}"), FormatFilter]
         public async Task<IActionResult> GetTimeZone([FromBody] string zipCode)
         {
+            if (string.IsNullOrWhiteSpace(zipCode)) return BadRequest();
+
             try
             {
                 var result = await _dataRetriever.GetData(zipCode);

@@ -1,4 +1,4 @@
- 
+
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Models;
 using NSubstitute;
-using NSubstitute.ReceivedExtensions;
 using Services.Controllers;
 using Xunit;
 
@@ -21,8 +20,8 @@ namespace Services.Tests
         public void Constructor_WhenDataRetrieverArgumentIsNull_ThrowsArgumentNullException()
         {
             var logger = Substitute.For<ILoggerFactory>();
-         
-            Assert.Throws<ArgumentNullException>(() => new WeatherServiceController(logger,null));
+
+            Assert.Throws<ArgumentNullException>(() => new WeatherServiceController(logger, null));
         }
 
         [Fact]
@@ -49,7 +48,7 @@ namespace Services.Tests
 
 
         [Fact]
-        public async Task GetAsync_WhenCallsServiceArgsOk_ReturnsOne()
+        public async Task GetAsync_WhenTMethodIsCalled_TypeShouldBeOk()
         {
 
             var logger = Substitute.For<ILoggerFactory>();
@@ -64,6 +63,6 @@ namespace Services.Tests
 
 
             result.Should().BeOfType(typeof(OkObjectResult));
-        } 
+        }
     }
 }

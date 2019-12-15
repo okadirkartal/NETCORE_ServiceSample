@@ -17,7 +17,7 @@ namespace Services.Controllers
         public WeatherServiceController(ILoggerFactory loggerFactory,
             IDataRetriever<WeatherInfo> dataRetriever)
         {
-            _logger = loggerFactory.CreateLogger(typeof(WeatherServiceController))?? throw new ArgumentNullException(nameof(loggerFactory)); ;
+            _logger = loggerFactory.CreateLogger(typeof(WeatherServiceController))?? throw new ArgumentNullException(nameof(loggerFactory));
             _dataRetriever = dataRetriever ?? throw new ArgumentNullException(nameof(dataRetriever));
         }
 
