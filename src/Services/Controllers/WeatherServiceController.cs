@@ -17,8 +17,8 @@ namespace Services.Controllers
         public WeatherServiceController(ILoggerFactory loggerFactory,
             IDataRetriever<WeatherInfo> dataRetriever)
         {
-            _logger = loggerFactory.CreateLogger(typeof(WeatherServiceController));
-            _dataRetriever = dataRetriever ?? throw new ArgumentException(nameof(dataRetriever));
+            _logger = loggerFactory.CreateLogger(typeof(WeatherServiceController))?? throw new ArgumentNullException(nameof(loggerFactory)); ;
+            _dataRetriever = dataRetriever ?? throw new ArgumentNullException(nameof(dataRetriever));
         }
 
         /* SAMPLE REQUEST(GET): https://localhost:44375/weatherService/{cityId}.{format} 
@@ -28,6 +28,9 @@ namespace Services.Controllers
         [HttpGet("{cityCode}.{format?}"), FormatFilter]
         public async Task<IActionResult> Get(string cityCode)
         {
+            if (string.IsNullOrWhiteSpace(cityCode))
+                return BadRequest();
+
             try
             {
                 var result = await _dataRetriever.GetData(cityCode);
