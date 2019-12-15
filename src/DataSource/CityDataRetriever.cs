@@ -24,7 +24,11 @@ namespace DataSource
         {
             int.TryParse(parameter, out int cityId);
             var list = JsonSerializer.Deserialize<List<City>>(File.ReadAllText(_configuration.Value.CityDataFilePath));
-            return await Task.Run(() => { return list.Where(x => x.id == cityId).ToList(); });
+            
+            return await Task.Run(() =>
+            {
+               return cityId == 0 ? list : list.Where(x=>x.id == cityId).ToList();
+            });
         }
     }
 }
