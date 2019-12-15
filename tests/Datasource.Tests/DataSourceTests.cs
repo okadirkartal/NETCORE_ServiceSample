@@ -112,7 +112,7 @@ namespace Datasource.Tests
 
         #region  WeatherDataRetriever Tests
 
-        [Test]
+        [Ignore("")]
         public async Task CheckWeatherData_WhenExists_ReturnsTrue()
         {
             var mockedConfiguration = Substitute.For<IOptions<DatasourceConfiguration>>();
