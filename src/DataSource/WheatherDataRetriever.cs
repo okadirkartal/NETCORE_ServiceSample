@@ -12,8 +12,7 @@ using Newtonsoft.Json;
 
 namespace DataSource
 {
-    public class WeatherDataRetriever : IOfflineDataRetriever<WeatherInfo>, IOnlineDataRetriever,
-        IDataRetriever<WeatherInfo>
+    public class WeatherDataRetriever : IOnlineDataRetriever, IDataRetriever<WeatherInfo>
     {
         private readonly IOptions<DatasourceConfiguration> _configuration;
         private readonly IHttpClientFactory _httpClientFactory;
@@ -22,9 +21,9 @@ namespace DataSource
         public WeatherDataRetriever(IOptions<DatasourceConfiguration> configuration,
             IHttpClientFactory httpClientFactory, ILogger<WeatherDataRetriever> logger)
         {
-            _configuration = configuration??throw new ArgumentNullException(nameof(configuration));
-            _httpClientFactory = httpClientFactory??throw new ArgumentNullException(nameof(httpClientFactory));
-            _logger = logger?? throw  new ArgumentNullException(nameof(logger));
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task<HttpResponseMessage> GetDataFromApi(string cityId)
@@ -60,31 +59,16 @@ namespace DataSource
                 }
                 else
                 {
-                    list.Add(await GetRandomData());
+                    _logger.LogError(
+                        $"An error occured while retrieving online weather info data {response.StatusCode}");
                 }
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message, ex, "An error occured while retrieving online weather info data");
-                list.Add(await GetRandomData());
             }
 
             return list;
-        }
-
-        public async Task<WeatherInfo> GetRandomData()
-        {
-            var weatherInfoOfflineList = await GetDataFromFile(null);
-            Random rnd = new Random();
-            var weatherInfoItem = weatherInfoOfflineList[rnd.Next(0, weatherInfoOfflineList.Count - 1)];
-            return weatherInfoItem ?? new WeatherInfo();
-        }
-
-        public async Task<List<WeatherInfo>> GetDataFromFile(string parameter)
-        {
-            var list = System.Text.Json.JsonSerializer.Deserialize<List<WeatherInfo>>(
-                File.ReadAllText(_configuration.Value.GeolocationDataFilePath));
-            return await Task.FromResult(list);
         }
     }
 }
