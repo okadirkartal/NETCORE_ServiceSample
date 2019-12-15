@@ -4,27 +4,29 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Configuration;
-using DataSource.Entities;
+using DataSource.Contracts;
 using Microsoft.Extensions.Options;
+using Models;
 
 namespace DataSource
 {
-    public class CityDataRetriever : IDataRetriever<City>
+    public class CityDataRetriever : IOfflineDataRetriever<City>
     {
-        private IOptions<DatasourceConfiguration> _configuration;
+        private readonly  IOptions<DatasourceConfiguration> _configuration;
 
         public CityDataRetriever(IOptions<DatasourceConfiguration> configuration)
         {
             _configuration = configuration;
         }
 
-        public Task<List<City>> GetData(string parameter)
+        public async Task<List<City>> GetDataFromFile(string parameter)
         {
-            string cityCode = parameter;
+            int.TryParse(parameter, out int cityId);
             var list = JsonSerializer.Deserialize<List<City>>(File.ReadAllText(_configuration.Value.CityDataFilePath));
-            if (!string.IsNullOrWhiteSpace(cityCode))
-                list = list.Where(x => x.Code == cityCode).ToList();
-            return Task.FromResult(list);
-        }
+            return await Task.Run(() =>
+            {
+                return list.Where(x => x.id == cityId).ToList(); 
+            });
+        } 
     }
 }

@@ -4,6 +4,7 @@ using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Configuration;
+using DataSource.Contracts;
 using DataSource.Entities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -11,7 +12,7 @@ using Newtonsoft.Json;
 
 namespace DataSource
 {
-    public class GeoLocationDataRetriever : IDataRetriever<GeoLocation>
+    public class GeoLocationDataRetriever : IOfflineDataRetriever<GeoLocation>,IOnlineDataRetriever,IDataRetriever<GeoLocation>
     {
         private readonly IOptions<DatasourceConfiguration> _configuration;
         private readonly IHttpClientFactory _httpClientFactory;
@@ -25,12 +26,12 @@ namespace DataSource
             _logger = logger;
         }
 
-        private async Task<HttpResponseMessage> GetGeoLocationFromApi(string parameter)
+        public async Task<HttpResponseMessage> GetDataFromApi(string parameter)
         {
             string zipCode = parameter;
 
 
-            var apiPathIpApi = string.Format(_configuration.Value.GeoLocationIPPath, zipCode);
+            var apiPathIpApi = string.Format(_configuration.Value.GeoLocationApiBaseUrl, zipCode);
 
             var request = new HttpRequestMessage(HttpMethod.Get, apiPathIpApi);
 
@@ -45,7 +46,7 @@ namespace DataSource
 
             try
             {
-                var response = await GetGeoLocationFromApi(parameter);
+                var response = await GetDataFromApi(parameter);
 
 
                 if (response.IsSuccessStatusCode)
@@ -61,31 +62,31 @@ namespace DataSource
                 }
                 else
                 {
-                    list.Add(await GetRandomGeoLocation());
+                    list.Add(await GetRandomData());
                 }
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message, ex, "An error occured while retrieving online geo location data");
-                list.Add(await GetRandomGeoLocation());
+                list.Add(await GetRandomData());
             }
 
             return list;
         }
 
-        private async Task<GeoLocation> GetRandomGeoLocation()
+        public async Task<GeoLocation> GetRandomData()
         {
-            var geoLocationOfflineList = await GetGeoLocationList();
+            var geoLocationOfflineList = await GetDataFromFile(null);
             Random rnd = new Random();
             var geoLocationItem = geoLocationOfflineList[rnd.Next(0, geoLocationOfflineList.Count - 1)];
             return geoLocationItem ?? new GeoLocation();
-        }
+        } 
 
-        public Task<List<GeoLocation>> GetGeoLocationList()
+        public async Task<List<GeoLocation>> GetDataFromFile(string parameter)
         {
             var list = System.Text.Json.JsonSerializer.Deserialize<List<GeoLocation>>(
                 File.ReadAllText(_configuration.Value.GeolocationDataFilePath));
-            return Task.FromResult(list);
-        }
+            return await Task.FromResult(list);
+        } 
     }
 }

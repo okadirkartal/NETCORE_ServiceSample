@@ -1,7 +1,11 @@
-﻿namespace DataSource.Contracts
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace DataSource.Contracts
 {
-    public class IDataRetriever
+    public interface IDataRetriever<T>
     {
-        
+        Task<List<T>> GetData(string parameter=null);
+        Task<T> GetRandomData();
     }
 }

@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections.Generic; 
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using DataSource;
-using DataSource.Entities;
+using DataSource.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Models;
 
 namespace Services.Controllers
 {
@@ -13,20 +13,20 @@ namespace Services.Controllers
     public class CityServiceController : ControllerBase
     {
         private readonly ILogger<CityServiceController> _logger;
-        private readonly IDataRetriever<City> _dataRetriever;
+        private readonly IOfflineDataRetriever<City> _dataRetriever;
 
-        public CityServiceController(ILogger<CityServiceController> logger, IDataRetriever<City> dataRetriever)
+        public CityServiceController(ILogger<CityServiceController> logger, IOfflineDataRetriever<City> dataRetriever)
         {
             _logger = logger;
             _dataRetriever = dataRetriever;
         }
 
-        [HttpGet("{cityCode}.{format?}"),FormatFilter]
-        public async Task<IEnumerable<City>> Get(string cityCode)
+        [HttpGet("{id}.{format?}"), FormatFilter]
+        public async Task<IEnumerable<City>> Get(string id)
         {
             try
             {
-                var result =await _dataRetriever.GetData(cityCode);
+                var result = await _dataRetriever.GetDataFromFile(id);
                 return result;
             }
             catch (Exception ex)

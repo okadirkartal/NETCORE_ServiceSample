@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Configuration;
 using DataSource;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NSubstitute;
 using NUnit.Framework;
@@ -32,14 +33,11 @@ namespace Datasource.Tests
 
             Directory.CreateDirectory("Data");
             CopyJsonFiles(_serviceDirectory, _configuration[CKeys.CityDataConfigKey]);
-
-            CopyJsonFiles(_serviceDirectory, _configuration[CKeys.WheatherDataConfigKey]);
-
+            
             CopyJsonFiles(_serviceDirectory, _configuration[CKeys.GeoLocationDataConfigKey]);
         }
 
         [TestCase(CKeys.CityDataConfigKey)]
-        [TestCase(CKeys.WheatherDataConfigKey)]
         [TestCase(CKeys.GeoLocationDataConfigKey)]
         public void CheckCityDataFiles_WhenExists_ReturnsTrue(string parameter)
         {
@@ -55,21 +53,11 @@ namespace Datasource.Tests
             mockedConfiguration.Value.Returns(new DatasourceConfiguration()
                 {CityDataFilePath = _configuration[CKeys.CityDataConfigKey]});
 
-            var result = await new CityDataRetriever(mockedConfiguration).GetData(null);
-            Assert.AreEqual(result.Count, 9);
+            var result = await new CityDataRetriever(mockedConfiguration).GetDataFromFile("745044");
+            Assert.Greater(result.Count, 0);
         }
 
-        [Test]
-        public async Task CheckWeatherData_WhenExists_ReturnsTrue()
-        {
-            var mockedConfiguration = Substitute.For<IOptions<DatasourceConfiguration>>();
-            mockedConfiguration.Value.Returns(new DatasourceConfiguration()
-                {WeatherDataFilePath = _configuration[CKeys.WheatherDataConfigKey]});
-
-            var result = await new WheatherDataRetriever(mockedConfiguration).GetData(null);
-            Assert.AreEqual(result.Count, 9);
-        }
-
+        
         [Test]
         public async Task CheckGeoLocationData_WhenExists_ReturnsTrue()
         {
@@ -79,10 +67,13 @@ namespace Datasource.Tests
 
             var mockedHttpClient = Substitute.For<IHttpClientFactory>();
             mockedHttpClient.CreateClient("test");
+            
+            
+            var logger = Substitute.For<ILogger<GeoLocationDataRetriever>>();
 
-            var result = await new GeoLocationDataRetriever(mockedConfiguration, mockedHttpClient, null)
-                .GetGeoLocationList();
-            Assert.AreEqual(result.Count, 5);
+            var result = await new GeoLocationDataRetriever(mockedConfiguration, mockedHttpClient, logger)
+                .GetData("60610");
+            Assert.AreEqual(result.Count, 1);
         }
 
         #region Non Tests

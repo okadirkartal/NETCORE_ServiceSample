@@ -1,6 +1,6 @@
 ﻿namespace Models
 {
-    public class Cloud
+    public class Clouds
     {
         public int all { get; set; }
     }
