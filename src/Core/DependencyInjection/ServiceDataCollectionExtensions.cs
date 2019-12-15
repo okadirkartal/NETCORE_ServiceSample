@@ -11,7 +11,7 @@ namespace DependencyInjection
     {
         public static IServiceCollection AddServiceRetrieverServiceCollection(this IServiceCollection services)
         {
-            services.AddScoped<IOfflineDataRetriever<City>, CityDataRetriever>(); 
+            services.AddScoped<IOfflineDataRetriever<City>, CityDataRetriever>();
             services.TryAddScoped(typeof(IDataRetriever<WeatherInfo>), typeof(WeatherDataRetriever));
             services.TryAddScoped(typeof(IOnlineDataRetriever), typeof(WeatherDataRetriever));
             services.TryAddScoped(typeof(IOfflineDataRetriever<WeatherInfo>), typeof(WeatherDataRetriever));

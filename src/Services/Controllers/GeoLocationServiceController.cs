@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
-using System.Threading.Tasks;
-using DataSource;
+using System.Threading.Tasks; 
 using DataSource.Contracts;
 using DataSource.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -23,9 +22,9 @@ namespace Services.Controllers
             _dataRetriever = dataRetriever;
         }
 
-      
+
         [HttpPost]
-        [Route("all.{format}"),FormatFilter]
+        [Route("all.{format}"), FormatFilter]
         public async Task<GeoLocation> Post([FromBody] string zipCode)
         {
             try

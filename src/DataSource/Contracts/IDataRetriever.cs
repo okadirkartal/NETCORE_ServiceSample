@@ -5,7 +5,7 @@ namespace DataSource.Contracts
 {
     public interface IDataRetriever<T>
     {
-        Task<List<T>> GetData(string parameter=null);
+        Task<List<T>> GetData(string parameter = null);
         Task<T> GetRandomData();
     }
 }

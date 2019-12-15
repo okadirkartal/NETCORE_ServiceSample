@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using DataSource.Entities;
 using Newtonsoft.Json;
@@ -10,9 +9,6 @@ namespace Datasource.Tests
     [Order(1)]
     public class JsonDataGenerator
     {
-      
-       
-
         [Test]
         public void GenerateGeoLocationData()
         {

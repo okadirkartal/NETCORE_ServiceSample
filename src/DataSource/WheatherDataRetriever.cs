@@ -12,7 +12,8 @@ using Newtonsoft.Json;
 
 namespace DataSource
 {
-    public class WeatherDataRetriever : IOfflineDataRetriever<WeatherInfo>,IOnlineDataRetriever,IDataRetriever<WeatherInfo>
+    public class WeatherDataRetriever : IOfflineDataRetriever<WeatherInfo>, IOnlineDataRetriever,
+        IDataRetriever<WeatherInfo>
     {
         private readonly IOptions<DatasourceConfiguration> _configuration;
         private readonly IHttpClientFactory _httpClientFactory;
@@ -28,7 +29,6 @@ namespace DataSource
 
         public async Task<HttpResponseMessage> GetDataFromApi(string cityId)
         {
-
             var apiPathIpApi = _configuration.Value.WeatherApiBaseUrl + "&id=" + cityId;
 
             var request = new HttpRequestMessage(HttpMethod.Get, apiPathIpApi);
@@ -78,7 +78,7 @@ namespace DataSource
             Random rnd = new Random();
             var weatherInfoItem = weatherInfoOfflineList[rnd.Next(0, weatherInfoOfflineList.Count - 1)];
             return weatherInfoItem ?? new WeatherInfo();
-        } 
+        }
 
         public async Task<List<WeatherInfo>> GetDataFromFile(string parameter)
         {

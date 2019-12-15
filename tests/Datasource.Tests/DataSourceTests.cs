@@ -33,7 +33,7 @@ namespace Datasource.Tests
 
             Directory.CreateDirectory("Data");
             CopyJsonFiles(_serviceDirectory, _configuration[CKeys.CityDataConfigKey]);
-            
+
             CopyJsonFiles(_serviceDirectory, _configuration[CKeys.GeoLocationDataConfigKey]);
         }
 
@@ -57,7 +57,7 @@ namespace Datasource.Tests
             Assert.Greater(result.Count, 0);
         }
 
-        
+
         [Test]
         public async Task CheckGeoLocationData_WhenExists_ReturnsTrue()
         {
@@ -67,8 +67,8 @@ namespace Datasource.Tests
 
             var mockedHttpClient = Substitute.For<IHttpClientFactory>();
             mockedHttpClient.CreateClient("test");
-            
-            
+
+
             var logger = Substitute.For<ILogger<GeoLocationDataRetriever>>();
 
             var result = await new GeoLocationDataRetriever(mockedConfiguration, mockedHttpClient, logger)
