@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DataSource.Entities
+namespace Models.GeoLocation
 {
     public class GeoLocation
     {

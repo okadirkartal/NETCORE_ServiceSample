@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using DataSource.Entities;
+using Models.GeoLocation;
 using Newtonsoft.Json;
 using NUnit.Framework;
 

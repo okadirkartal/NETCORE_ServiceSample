@@ -1,4 +1,4 @@
-﻿namespace DataSource.Entities
+﻿namespace Models.GeoLocation
 {
     public class AcceptableCityName
     {
