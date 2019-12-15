@@ -17,7 +17,7 @@ namespace DataSource
 
         public CityDataRetriever(IOptions<DatasourceConfiguration> configuration)
         {
-            _configuration = configuration??throw new ArgumentNullException(nameof(configuration));
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
         public async Task<List<City>> GetDataFromFile(string parameter)

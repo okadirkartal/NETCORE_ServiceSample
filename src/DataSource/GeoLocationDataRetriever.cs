@@ -5,14 +5,15 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Configuration;
 using DataSource.Contracts;
-using DataSource.Entities;
+using Models.GeoLocation;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
 namespace DataSource
 {
-    public class GeoLocationDataRetriever : IOfflineDataRetriever<GeoLocation>,IOnlineDataRetriever,IDataRetriever<GeoLocation>
+    public class GeoLocationDataRetriever : IOfflineDataRetriever<GeoLocation>, IOnlineDataRetriever,
+        IDataRetriever<GeoLocation>
     {
         private readonly IOptions<DatasourceConfiguration> _configuration;
         private readonly IHttpClientFactory _httpClientFactory;
@@ -21,9 +22,9 @@ namespace DataSource
         public GeoLocationDataRetriever(IOptions<DatasourceConfiguration> configuration,
             IHttpClientFactory httpClientFactory, ILogger<GeoLocationDataRetriever> logger)
         {
-            _configuration = configuration??throw new ArgumentNullException(nameof(configuration));
-            _httpClientFactory = httpClientFactory??throw new ArgumentNullException(nameof(httpClientFactory));
-            _logger = logger?? throw  new ArgumentNullException(nameof(logger));
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task<HttpResponseMessage> GetDataFromApi(string parameter)
@@ -80,13 +81,13 @@ namespace DataSource
             Random rnd = new Random();
             var geoLocationItem = geoLocationOfflineList[rnd.Next(0, geoLocationOfflineList.Count - 1)];
             return geoLocationItem ?? new GeoLocation();
-        } 
+        }
 
         public async Task<List<GeoLocation>> GetDataFromFile(string parameter)
         {
             var list = System.Text.Json.JsonSerializer.Deserialize<List<GeoLocation>>(
                 File.ReadAllText(_configuration.Value.GeolocationDataFilePath));
             return await Task.FromResult(list);
-        } 
+        }
     }
 }
