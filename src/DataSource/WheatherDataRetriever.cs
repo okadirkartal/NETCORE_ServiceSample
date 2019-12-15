@@ -22,9 +22,9 @@ namespace DataSource
         public WeatherDataRetriever(IOptions<DatasourceConfiguration> configuration,
             IHttpClientFactory httpClientFactory, ILogger<WeatherDataRetriever> logger)
         {
-            _configuration = configuration;
-            _httpClientFactory = httpClientFactory;
-            _logger = logger;
+            _configuration = configuration??throw new ArgumentNullException(nameof(configuration));
+            _httpClientFactory = httpClientFactory??throw new ArgumentNullException(nameof(httpClientFactory));
+            _logger = logger?? throw  new ArgumentNullException(nameof(logger));
         }
 
         public async Task<HttpResponseMessage> GetDataFromApi(string cityId)

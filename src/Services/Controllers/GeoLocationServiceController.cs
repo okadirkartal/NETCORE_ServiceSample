@@ -18,8 +18,8 @@ namespace Services.Controllers
         public GeoLocationServiceController(ILogger<GeoLocationServiceController> logger,
             IDataRetriever<GeoLocation> dataRetriever)
         {
-            _logger = logger;
-            _dataRetriever = dataRetriever;
+            _logger = logger?? throw  new ArgumentNullException(nameof(logger));
+            _dataRetriever = dataRetriever ?? throw  new ArgumentException(nameof(dataRetriever));
         }
 
 

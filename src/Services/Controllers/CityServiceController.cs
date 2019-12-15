@@ -17,8 +17,8 @@ namespace Services.Controllers
 
         public CityServiceController(ILogger<CityServiceController> logger, IOfflineDataRetriever<City> dataRetriever)
         {
-            _logger = logger;
-            _dataRetriever = dataRetriever;
+            _logger = logger?? throw  new ArgumentNullException(nameof(logger));
+            _dataRetriever = dataRetriever ?? throw  new ArgumentException(nameof(dataRetriever));
         }
 
         [HttpGet("{id}.{format?}"), FormatFilter]

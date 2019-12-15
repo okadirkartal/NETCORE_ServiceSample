@@ -18,8 +18,8 @@ namespace Services.Controllers
         public WeatherServiceController(ILogger<WeatherServiceController> logger,
             IDataRetriever<WeatherInfo> dataRetriever)
         {
-            _logger = logger;
-            _dataRetriever = dataRetriever;
+            _logger = logger?? throw  new ArgumentNullException(nameof(logger));
+            _dataRetriever = dataRetriever ?? throw  new ArgumentException(nameof(dataRetriever));
         }
 
         [HttpGet("{cityCode}.{format?}"), FormatFilter]

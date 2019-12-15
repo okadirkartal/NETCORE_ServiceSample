@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -16,7 +17,7 @@ namespace DataSource
 
         public CityDataRetriever(IOptions<DatasourceConfiguration> configuration)
         {
-            _configuration = configuration;
+            _configuration = configuration??throw new ArgumentNullException(nameof(configuration));
         }
 
         public async Task<List<City>> GetDataFromFile(string parameter)
