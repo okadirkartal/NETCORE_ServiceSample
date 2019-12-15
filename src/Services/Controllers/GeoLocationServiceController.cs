@@ -11,13 +11,13 @@ namespace Services.Controllers
     [Route("[controller]")]
     public class GeoLocationServiceController : ControllerBase
     {
-        private readonly ILogger<GeoLocationServiceController> _logger;
+        private readonly ILogger _logger;
         private readonly IDataRetriever<GeoLocation> _dataRetriever;
 
-        public GeoLocationServiceController(ILogger<GeoLocationServiceController> logger,
+        public GeoLocationServiceController(ILoggerFactory loggerFactory,
             IDataRetriever<GeoLocation> dataRetriever)
         {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _logger = loggerFactory.CreateLogger(typeof(GeoLocationServiceController));
             _dataRetriever = dataRetriever ?? throw new ArgumentException(nameof(dataRetriever));
         }
 

@@ -11,12 +11,12 @@ namespace Services.Controllers
     [Route("[controller]")]
     public class CityServiceController : ControllerBase
     {
-        private readonly ILogger<CityServiceController> _logger;
+        private readonly ILogger _logger;
         private readonly IOfflineDataRetriever<City> _dataRetriever;
 
-        public CityServiceController(ILogger<CityServiceController> logger, IOfflineDataRetriever<City> dataRetriever)
+        public CityServiceController(ILoggerFactory loggerFactory, IOfflineDataRetriever<City> dataRetriever)
         {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _logger = loggerFactory.CreateLogger(typeof(CityServiceController));
             _dataRetriever = dataRetriever ?? throw new ArgumentException(nameof(dataRetriever));
         }
 
@@ -29,7 +29,7 @@ namespace Services.Controllers
         {
             try
             {
-                var result = await _dataRetriever.GetDataFromFile(id);
+                var result = await _dataRetriever.GetDataFromFile(id); 
                 return Ok(result);
             }
             catch (Exception ex)

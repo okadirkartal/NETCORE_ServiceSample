@@ -17,14 +17,14 @@ namespace DataSource
     {
         private readonly IOptions<DatasourceConfiguration> _configuration;
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly ILogger<GeoLocationDataRetriever> _logger;
+        private readonly ILogger  _logger;
 
         public GeoLocationDataRetriever(IOptions<DatasourceConfiguration> configuration,
-            IHttpClientFactory httpClientFactory, ILogger<GeoLocationDataRetriever> logger)
+            IHttpClientFactory httpClientFactory, ILoggerFactory loggerFactory)
         {
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _logger = loggerFactory.CreateLogger(typeof(GeoLocationDataRetriever));
         }
 
         public async Task<HttpResponseMessage> GetDataFromApi(string parameter)

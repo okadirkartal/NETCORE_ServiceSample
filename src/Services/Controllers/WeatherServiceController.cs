@@ -11,13 +11,13 @@ namespace Services.Controllers
     [Route("[controller]")]
     public class WeatherServiceController : ControllerBase
     {
-        private readonly ILogger<WeatherServiceController> _logger;
+        private readonly ILogger  _logger;
         private readonly IDataRetriever<WeatherInfo> _dataRetriever;
 
-        public WeatherServiceController(ILogger<WeatherServiceController> logger,
+        public WeatherServiceController(ILoggerFactory loggerFactory,
             IDataRetriever<WeatherInfo> dataRetriever)
         {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _logger = loggerFactory.CreateLogger(typeof(WeatherServiceController));
             _dataRetriever = dataRetriever ?? throw new ArgumentException(nameof(dataRetriever));
         }
 

@@ -16,14 +16,14 @@ namespace DataSource
     {
         private readonly IOptions<DatasourceConfiguration> _configuration;
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly ILogger<WeatherDataRetriever> _logger;
+        private readonly ILogger  _logger;
 
         public WeatherDataRetriever(IOptions<DatasourceConfiguration> configuration,
-            IHttpClientFactory httpClientFactory, ILogger<WeatherDataRetriever> logger)
+            IHttpClientFactory httpClientFactory, ILoggerFactory loggerFactory)
         {
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _logger = loggerFactory.CreateLogger(typeof(WeatherDataRetriever));
         }
 
         public async Task<HttpResponseMessage> GetDataFromApi(string cityId)
